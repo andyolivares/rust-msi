@@ -2,7 +2,7 @@ use crate::internal::codepage::CodePage;
 use crate::internal::language::Language;
 use crate::internal::propset::{OperatingSystem, PropertySet, PropertyValue};
 use std::io::{self, Read, Seek, Write};
-use std::time::SystemTime;
+use std::time::{SystemTime, UNIX_EPOCH};
 use uuid::Uuid;
 
 // ========================================================================= //
@@ -170,7 +170,7 @@ impl SummaryInfo {
 
     /// Gets the "creation time" property, if one is set.  This indicates the
     /// date/time when the package was created.
-    pub fn creation_time(&self) -> Option<SystemTime> {
+    pub fn creation_time(&self) -> Option<u64> {
         match self.properties.get(PROPERTY_CREATION_TIME) {
             Some(&PropertyValue::FileTime(timestamp)) => Some(timestamp),
             _ => None,
@@ -178,14 +178,14 @@ impl SummaryInfo {
     }
 
     /// Sets the "creation time" property.
-    pub fn set_creation_time(&mut self, timestamp: SystemTime) {
+    pub fn set_creation_time(&mut self, timestamp: u64) {
         self.properties
             .set(PROPERTY_CREATION_TIME, PropertyValue::FileTime(timestamp));
     }
 
     /// Sets the "creation time" property to the current time.
     pub fn set_creation_time_to_now(&mut self) {
-        self.set_creation_time(SystemTime::now());
+        self.set_creation_time(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs());
     }
 
     /// Clears the "creation time" property.
@@ -331,7 +331,7 @@ impl SummaryInfo {
 mod tests {
     use super::SummaryInfo;
     use crate::internal::language::Language;
-    use std::time::SystemTime;
+    use std::time::{SystemTime, UNIX_EPOCH};
     use uuid::Uuid;
 
     #[test]
@@ -342,7 +342,7 @@ mod tests {
             Language::from_tag("en-US"),
             Language::from_tag("es-MX"),
         ];
-        let timestamp = SystemTime::now();
+        let timestamp = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
         let uuid =
             Uuid::parse_str("0000002a-000c-0005-0c03-0938362b0809").unwrap();
 

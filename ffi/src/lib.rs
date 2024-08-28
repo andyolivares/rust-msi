@@ -103,7 +103,7 @@ fn get_information(path: char_p::Ref<'_>) -> MsiInformation {
                 creation_time: {
                     if let Some(time) = package.summary_info().creation_time()
                     {
-                        let datetime: DateTime<Utc> = time.into();
+                        let datetime: DateTime<Utc> = DateTime::from_timestamp(time as i64, 0).unwrap();
                         datetime.to_rfc2822().into()
                     } else {
                         "".into()

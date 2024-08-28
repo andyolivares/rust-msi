@@ -1,7 +1,6 @@
 use clap::{App, Arg, SubCommand};
 use std::cmp;
 use std::io::{self, Read, Seek};
-use time::OffsetDateTime;
 
 fn pad(mut string: String, fill: char, width: usize) -> String {
     while string.len() < width {
@@ -38,7 +37,7 @@ fn print_summary_info<F>(package: &msi::Package<F>) {
         println!("    Language: {}", tags.join(", "));
     }
     if let Some(timestamp) = summary_info.creation_time() {
-        println!("  Created at: {}", OffsetDateTime::from(timestamp));
+        println!("  Created at: {}", timestamp);
     }
     if let Some(app_name) = summary_info.creating_application() {
         println!("Created with: {app_name}");

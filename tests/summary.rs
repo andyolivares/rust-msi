@@ -7,8 +7,7 @@ use uuid::Uuid;
 
 #[test]
 fn set_summary_info_properties() {
-    let sat_2017_mar_18_at_18_46_36_gmt =
-        UNIX_EPOCH + Duration::from_secs(1489862796);
+    let sat_2017_mar_18_at_18_46_36_gmt: u64 = 1489862796;
     let uuid =
         Uuid::parse_str("9bb29b0d-edc7-4699-9607-a5e201d67ed1").unwrap();
 
@@ -74,7 +73,7 @@ fn dropping_package_persists_changes() {
 
 #[test]
 fn set_creation_time_to_now() {
-    let timestamp = SystemTime::now();
+    let timestamp = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
 
     let cursor = Cursor::new(Vec::new());
     let mut package = Package::create(PackageType::Installer, cursor).unwrap();
