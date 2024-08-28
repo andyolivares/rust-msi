@@ -1,4 +1,5 @@
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::time::{Duration, SystemTime};
+use chrono::{DateTime, TimeDelta};
 
 // ========================================================================= //
 
@@ -25,7 +26,10 @@ pub fn system_time_from_filetime(timestamp: u64) -> SystemTime {
 fn filetime_epoch() -> SystemTime {
     // The epoch used by CFB files is Jan 1, 1601 UTC, which we can calculate
     // from the Unix epoch constant, which is Jan 1, 1970 UTC.
-    UNIX_EPOCH - Duration::from_secs(11644473600)
+    DateTime::UNIX_EPOCH
+        .checked_sub_signed(TimeDelta::seconds(11644473600))
+        .unwrap()
+        .into()
 }
 
 // ========================================================================= //
