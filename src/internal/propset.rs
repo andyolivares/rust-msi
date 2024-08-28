@@ -392,7 +392,6 @@ mod tests {
     use super::{OperatingSystem, PropertySet, PropertyValue};
     use crate::internal::codepage::CodePage;
     use std::io::Cursor;
-    use std::time::{Duration, UNIX_EPOCH};
 
     #[test]
     fn read_property_value() {
