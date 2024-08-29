@@ -1,6 +1,5 @@
 use msi::{CodePage, Package, PackageType};
 use std::io::{Cursor, Write};
-use std::time::{SystemTime, UNIX_EPOCH};
 use uuid::Uuid;
 
 // ========================================================================= //
