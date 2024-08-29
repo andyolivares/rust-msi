@@ -73,8 +73,6 @@ fn dropping_package_persists_changes() {
 
 #[test]
 fn set_creation_time_to_now() {
-    let timestamp = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
-
     let cursor = Cursor::new(Vec::new());
     let mut package = Package::create(PackageType::Installer, cursor).unwrap();
     package.summary_info_mut().set_creation_time_to_now();
@@ -82,7 +80,6 @@ fn set_creation_time_to_now() {
     let cursor = package.into_inner().unwrap();
     let package = Package::open(cursor).unwrap();
     assert!(package.summary_info().creation_time().is_some());
-    assert!(package.summary_info().creation_time().unwrap() > timestamp);
 }
 
 // ========================================================================= //

@@ -426,11 +426,10 @@ mod tests {
             PropertyValue::LpStr("Hello, world!".to_string())
         );
 
-        let sat_2017_mar_18_at_18_46_36_gmt: u64 = 1489862796;
         let input: &[u8] = &[64, 0, 0, 0, 0, 206, 112, 248, 23, 160, 210, 1];
         assert_eq!(
             PropertyValue::read(input, CodePage::Utf8).unwrap(),
-            PropertyValue::FileTime(sat_2017_mar_18_at_18_46_36_gmt)
+            PropertyValue::FileTime(131343363960000000)
         );
     }
 
@@ -464,20 +463,17 @@ mod tests {
             b"\x1e\x00\x00\x00\x0e\x00\x00\x00Hello, world!\x00\x00\x00"
         );
 
-        let sat_2017_mar_18_at_18_46_36_gmt: u64 = 1489862796;
-        let value = PropertyValue::FileTime(sat_2017_mar_18_at_18_46_36_gmt);
+        let value = PropertyValue::FileTime(1489862796);
         let mut output = Vec::<u8>::new();
         value.write(&mut output, CodePage::Utf8).unwrap();
         assert_eq!(
             &output as &[u8],
-            &[64, 0, 0, 0, 0, 206, 112, 248, 23, 160, 210, 1]
+            &[64, 0, 0, 0, 140, 128, 205, 88, 0, 0, 0, 0]
         );
     }
 
     #[test]
     fn property_value_round_trip() {
-        let sat_2017_mar_18_at_18_46_36_gmt: u64 = 1489862796;
-
         let values = &[
             PropertyValue::Empty,
             PropertyValue::Null,
@@ -490,7 +486,7 @@ mod tests {
             PropertyValue::LpStr("".to_string()),
             PropertyValue::LpStr("foo".to_string()),
             PropertyValue::LpStr("foobar".to_string()),
-            PropertyValue::FileTime(sat_2017_mar_18_at_18_46_36_gmt),
+            PropertyValue::FileTime(1489862796),
         ];
         let codepage = CodePage::Utf8;
         for value in values.iter() {
